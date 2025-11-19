@@ -8,7 +8,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/tracing"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/params"
 )
 
@@ -33,11 +32,6 @@ func EnsureOptimismPredeploys(c *params.ChainConfig, blockNum *big.Int, db vm.St
 
 		// Create the account, set the code, nonce, balance, and storage.
 		for address, account := range alloc {
-			if !db.Empty(address) {
-				log.Warn("address already exists in state, skipping", "address", address)
-				continue
-			}
-
 			db.CreateAccount(address)
 			if len(account.Code) > 0 {
 				db.SetCode(address, account.Code)
